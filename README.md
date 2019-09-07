@@ -6,6 +6,8 @@ It contains the simple blog microservices `user` , `post` and `comment` services
 
 ![](./apollo_federation.png)
 
+![Demo](./federation_demo.PNG)
+
 ### Installation
 
 `User Service`
