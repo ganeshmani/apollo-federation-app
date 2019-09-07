@@ -7,25 +7,41 @@ import { ApolloServer,gql } from 'apollo-server-express';
 import { buildFederatedSchema } from '@apollo/federation'
 import mongoose from 'mongoose';
 
-import { userTypeDefs,userResolvers } from './User';
+import { postTypeDefs,postResolvers } from './Post';
+import PostModel from './Post/Model';
 
 const typeDefs = gql`
-    type Error @key(fields: "status") @key(fields:"message"){
-        status : Int
-        message : String
+
+    extend type Error @key(fields: "status") @key(fields: "message") {
+        message: String @external
+        status: Int @external
+    } 
+
+    extend type User @key(fields: "_id") {
+        _id : ID! @external
+        posts: [Post]
     }
 
-    type User @key(fields: "_id"){
-        _id : ID!
-        name : String!
-        email : String!
+    type Post{
+        _id : ID
+        name : String
+        description : String
     }
 
-    ${userTypeDefs}
+    ${postTypeDefs}
 `
 
+const resolverReferences = {
+    User: {
+        async posts(user) {
+            return PostModel.getPostByUserId(user._id)
+        }
+    }
+}
+
 const resolvers = merge(
-    userResolvers
+    resolverReferences,
+    postResolvers
 )
 
 const app = express();
@@ -35,7 +51,7 @@ const MONGO_DB = process.env.MONGO_DB;
 
 mongoose.connect(`mongodb://localhost:27017/${MONGO_DB}`,{ useNewUrlParser : true })
     .then((res) => {
-
+        console.log("mongoose connected successfully");
         const server = new ApolloServer({
             schema : buildFederatedSchema([
                 {

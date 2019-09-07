@@ -1,27 +1,29 @@
 {
-  "name": "apollo-federation-app",
+  "name": "PostService",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start-gateway": "nodemon --exec babel-node gateway.js",
-    "postinstall": "lerna bootstrap",
+    "dev": "nodemon --exec babel-node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@apollo/gateway": "^0.10.4",
-    "apollo-server": "^2.9.3",
+    "@apollo/federation": "^0.9.4",
+    "apollo-server-express": "^2.9.3",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
     "graphql": "^14.5.4",
-    "redis": "^2.8.0"
+    "lodash": "^4.17.15",
+    "mongoose": "^5.6.13"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",
     "@babel/node": "^7.6.1",
     "@babel/preset-env": "^7.6.0",
-    "lerna": "^3.16.4",
+    "dotenv": "^8.1.0",
     "nodemon": "^1.19.2"
   }
 }
