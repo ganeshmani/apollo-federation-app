@@ -8,7 +8,7 @@ import { buildFederatedSchema } from '@apollo/federation'
 import mongoose from 'mongoose';
 
 import { commentTypeDefs,commentResolvers } from './Comment';
-import PostModel from './Post/Model';
+import CommentModel from './Comment/Model';
 
 const typeDefs = gql`
 
@@ -17,26 +17,42 @@ const typeDefs = gql`
         status: Int @external
     } 
 
+    extend type Post @key(fields: "_id"){
+        _id : ID @external
+        comments : [ Comment! ]
+    }
+
+    extend type User @key(fields: "_id"){
+        _id : ID @external
+        name : String @external
+        email : String @external
+    }
+    
+
     type Comment {
         _id : ID
-        postId : String
-        userId : String
-        description : String
+        postId : String!
+        user : User @provides(fields : "name") @provides(fields: "email")
+        description : String!
     }
 
     ${commentTypeDefs}
 `
-
-const resolverReferences = {
-    User: {
-        async posts(user) {
-            return PostModel.getPostByUserId(user._id)
+const resolveReferences = {
+    Comment : {
+        user(comment) {
+            return { __typename: "User",_id : comment.userId }
+        }
+    },
+    Post : {
+        async comments(post) {
+            return await CommentModel.getCommentByPost(post._id);
         }
     }
 }
 
 const resolvers = merge(
-    resolverReferences,
+    resolveReferences,
     commentResolvers
 )
 

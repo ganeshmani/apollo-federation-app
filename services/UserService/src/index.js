@@ -9,6 +9,8 @@ import mongoose from 'mongoose';
 
 import { userTypeDefs,userResolvers } from './User';
 
+import UserModel from './User/Model';
+
 const typeDefs = gql`
     type Error @key(fields: "status") @key(fields:"message"){
         status : Int
@@ -16,16 +18,26 @@ const typeDefs = gql`
     }
 
     type User @key(fields: "_id"){
-        _id : ID!
-        name : String!
-        email : String!
+        _id : ID
+        name : String
+        email : String
     }
 
     ${userTypeDefs}
 `
 
+const resolveRef = {
+    User : {
+        async __resolveReference(object) {
+            return await UserModel.getUserById(object._id);
+        }
+    }
+}
+
 const resolvers = merge(
+    resolveRef,
     userResolvers
+    
 )
 
 const app = express();

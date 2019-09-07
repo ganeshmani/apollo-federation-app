@@ -8,11 +8,11 @@ export const commentTypeDefs = `
 
     ${CommentTypes}
 
-    extend Type Query {
-        chec : String
+    extend type Query {
+        fetchCommentByPost(request : fetchCommentByPostInput) : fetchCommentByPostResponse
     }
 
-    extend Type Mutation {
+    extend type Mutation {
         postComment(request: postCommentInput) : postCommentResponse
         updateComment(request : updateCommentInput) : updateCommentResponse
     }

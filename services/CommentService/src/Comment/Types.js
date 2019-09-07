@@ -1,5 +1,13 @@
 export default `
 
+input fetchCommentByPostInputData {
+    postId : String!
+}
+
+input fetchCommentByPostInput {
+    data : fetchCommentByPostInputData
+}
+
  input updateCommentInputData {
      commentId : String!
      description : String!
@@ -17,6 +25,12 @@ export default `
 
  input postCommentInput {
      data : postCommentInputData
+ }
+
+ type fetchCommentByPostResponse {
+     success : Boolean
+     data : [Comment!]
+     error : Error
  }
 
  type postCommentResponse {

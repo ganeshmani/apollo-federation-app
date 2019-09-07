@@ -18,11 +18,11 @@ const typeDefs = gql`
     } 
 
     extend type User @key(fields: "_id") {
-        _id : ID! @external
+        _id : ID @external
         posts: [Post]
     }
 
-    type Post{
+    type Post @key(fields: "_id"){
         _id : ID
         name : String
         description : String
