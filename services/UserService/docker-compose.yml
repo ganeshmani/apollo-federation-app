@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  userapp:
+    container_name: userapp
+    restart: always
+    build: .
+    ports:
+      - "4001:4001"
+    links:
+      - usermongo
+  usermongo:
+    container_name: usermongo
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"  
