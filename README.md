@@ -37,8 +37,10 @@ $ npm run dev
 ` Gateway `
 
 ```
+npx lerna init
 $ npm install
 ```
+- With lerna being a tool for managing JS projects - more info @ https://github.com/lerna/lerna#readme
 
 This will install all of the dependencies for the gateway and each underlying service
 
